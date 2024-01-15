@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "431778937928",
+    "firebase_url": "https://sungai-buloh-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "sungai-buloh",
+    "storage_bucket": "sungai-buloh.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:431778937928:android:cf61ec2ccdfc534a272c7d",
+        "android_client_info": {
+          "package_name": "com.sungaibuloh"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBMA1bn6ygp-sMxwt7q0So0lzelWElMYI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
