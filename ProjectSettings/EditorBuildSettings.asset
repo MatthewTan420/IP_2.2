@@ -5,12 +5,15 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Sungei Buloh.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Test Area.unity
     guid: fd7d44b1dc171fb4799722b7dcaafcfe
+  - enabled: 1
+    path: Assets/Scenes/Test VR.unity
+    guid: 9c365c9e30f5a9846a014bc7a9451d36
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 25f98e4ffcd2874469fcc30708fafaf2,
       type: 2}
