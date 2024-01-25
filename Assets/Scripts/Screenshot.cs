@@ -77,6 +77,7 @@ public class Screenshot : MonoBehaviour
             //Write out the PNG.persistentDataPath is the path of the application
             File.WriteAllBytes(Path.Combine(path, fileName), bytes);
             StartCoroutine(UploadImage(2, fileName));
+            t.text += "" + "Save??/n";
         }
         catch (IOException e)
         {
@@ -106,7 +107,7 @@ public class Screenshot : MonoBehaviour
         // Create a reference to the file you want to upload
         //folder must be created first
         StorageReference imgRef = storageRef.Child(Path.Combine(StorageFolderAlias, fileName)); // "images/" + fileName);
-        t.text += "" + "Storage, ";
+        t.text += "" + "Storage/n";
 
         //https://firebase.google.com/docs/storage/unity/upload-files
         // Create file metadata including the content type
@@ -125,7 +126,7 @@ public class Screenshot : MonoBehaviour
                 // Metadata contains file metadata such as size, content-type, and download URL.
                 StorageMetadata metadata = task.Result;
                 string md5Hash = metadata.Md5Hash;
-                t.text += "" + "pjoto, ";
+                t.text += "" + "pjoto/n";
             }
         });
         isPhoto = false;
