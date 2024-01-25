@@ -5,8 +5,12 @@ using UnityEngine;
 
 public class Plant : MonoBehaviour
 {
+    public GameObject seed;
     public GameObject sapling;
     public GameObject plant;
+
+    public Animator animator;
+    public bool watered = false;
 
     // Start is called before the first frame update
     void Start()
@@ -24,8 +28,16 @@ public class Plant : MonoBehaviour
     {
         if (other.gameObject.tag == "Water" && gameObject.tag == "Plant")
         {
-            plant.SetActive(true);
-            sapling.SetActive(false);
+            animator.SetBool("isWater", true);
+            watered = true;
+        }
+
+        if (other.gameObject.tag == "Fertile" && gameObject.tag == "Plant")
+        {
+            if (watered == true)
+            {
+                animator.SetBool("isFertil", true);
+            }
         }
     }
 }
