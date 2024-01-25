@@ -27,8 +27,6 @@ public class AuthManager : MonoBehaviour
     [SerializeField]
     private TMP_InputField inputUser;
     [SerializeField]
-    private TMP_InputField inputCoun;
-    [SerializeField]
     private TMP_InputField inputAge;
 
     DatabaseReference mDatabaseRef;
@@ -37,6 +35,8 @@ public class AuthManager : MonoBehaviour
     public static string UID;
     public GameObject dataUI;
     public GameObject authUI;
+    public DropDown DropDown;
+    public DropDown DropDown1;
 
     private void Awake()
     {
@@ -100,17 +100,18 @@ public class AuthManager : MonoBehaviour
     public void CreateData()
     {
         string newUser = inputUser.text;
-        string newCoun = inputCoun.text;
+        string newGend = DropDown1.selectedOption;
+        string newOccu = DropDown.selectedOption;
         int newAge = int.Parse(inputAge.text);
-        WriteNewUser(newUser, 0, 0, newCoun, newAge, false, 0);
+        WriteNewUser(newUser, 0, 0, newGend, newOccu, newAge, false, 0);
     }
 
     /// <summary>
     /// Create data on firebase
     /// </summary>
-    private void WriteNewUser(string name, int time, int points, string country, int age, bool admin, int num)
+    private void WriteNewUser(string username, int distance, int rubbish, string gender, string occupation, int age, bool companion, int img)
     {
-        User user = new User(name, time, points, country, age, admin, num);
+        User user = new User(username, distance, rubbish, gender, occupation, age, companion, img);
         string json = JsonUtility.ToJson(user);
         mDatabaseRef.Child("players").Child(UID).SetRawJsonValueAsync(json);
         SceneManager.LoadScene(1);
@@ -151,7 +152,7 @@ public class AuthManager : MonoBehaviour
                     if (v.Key == UID)
                     {
                         t.text += "" + (p.age).ToString();
-                        t.text += "" + p.country;
+                        //t.text += "" + p.country;
                     }
                 }
             }

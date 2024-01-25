@@ -1,23 +1,25 @@
 public class User
 {
     public string username;
-    public int time;
-    public int points;
-    public string country;
+    public int distance;
+    public int rubbish;
+    public string gender;
+    public string occupation;
     public int age;
-    public bool admin;
-    public int num;
+    public bool companion;
+    public int img;
     public User()
     {
     }
-    public User(string username, int time, int points, string country, int age, bool admin, int num)
+    public User(string username, int distance, int rubbish, string gender, string occupation, int age, bool companion, int img)
     {
         this.username = username;
-        this.time = time;
-        this.points = points;
-        this.country = country;
+        this.distance = distance;
+        this.rubbish = rubbish;
+        this.gender = gender;
+        this.occupation = occupation;
         this.age = age;
-        this.admin = admin;
-        this.num = num;
+        this.companion = companion;
+        this.img = img;
     }
 }
