@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Water
   - Plant
+  - Fertile
+  - Trash
+  - Dustbin
   layers:
   - Default
   - TransparentFX
