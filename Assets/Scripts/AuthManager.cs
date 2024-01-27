@@ -38,6 +38,11 @@ public class AuthManager : MonoBehaviour
     public DropDown DropDown;
     public DropDown DropDown1;
 
+    public Trash Trash;
+    public Distance Distance;
+
+    public int distance;
+
     private void Awake()
     {
         auth = FirebaseAuth.DefaultInstance;
@@ -117,12 +122,20 @@ public class AuthManager : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
-    public void UpdateData(int time, int points, int num)
+    public void UpdateTrash()
     {
+        int rubbish = Trash.num;
         Dictionary<string, object> childUpdates = new Dictionary<string, object>();
-        childUpdates["/time"] = time;
-        childUpdates["/points"] = points;
-        childUpdates["/num"] = num;
+        childUpdates["/rubbish"] = rubbish;
+
+        reference.Child(UID).UpdateChildrenAsync(childUpdates);
+    }
+
+    public void UpdateDistance()
+    {
+        distance += 5;
+        Dictionary<string, object> childUpdates = new Dictionary<string, object>();
+        childUpdates["/distance"] = distance;
 
         reference.Child(UID).UpdateChildrenAsync(childUpdates);
     }
@@ -153,6 +166,7 @@ public class AuthManager : MonoBehaviour
                     {
                         t.text += "" + (p.age).ToString();
                         //t.text += "" + p.country;
+                        distance = p.distance;
                     }
                 }
             }

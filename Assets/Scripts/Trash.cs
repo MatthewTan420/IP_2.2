@@ -6,7 +6,9 @@ using TMPro;
 public class Trash : MonoBehaviour
 {
     public TextMeshPro textMeshPro;
-    private int num = 0;
+    public int num = 0;
+
+    public GameObject text;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -15,6 +17,11 @@ public class Trash : MonoBehaviour
             num += 1;
             textMeshPro.text = num.ToString();
             Destroy(other);
+        }
+
+        if (other.gameObject.tag == "Education" && text != null)
+        {
+            text.SetActive(true);
         }
     }
 }
