@@ -18,6 +18,7 @@ public class Screenshot : MonoBehaviour
     public string StorageFolderAlias = "image";
 
     private bool isPhoto = false;
+    public Camera cam;
 
     // Start is called before the first frame update
     void Start()
@@ -28,12 +29,12 @@ public class Screenshot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (/*Input.GetKeyDown(KeyCode.S)*/ isPhoto == true)
+        if (Input.GetKeyDown(KeyCode.T) /*isPhoto == true*/)
         {
             DateTimeOffset now = (DateTimeOffset)DateTime.UtcNow;
             string fileName = now.ToUnixTimeSeconds() + "-cam.png";
-            //ScreenCapture.CaptureScreenshot("GameScreenshot.png);
-            StartCoroutine(CoroutineScreenshot(fileName));
+            //ScreenCapture.CaptureScreenshot("GameScreenshot.png");
+            StartCoroutine(CoroutineScreenshot(fileName, cam));
         }
     }
 
@@ -42,7 +43,7 @@ public class Screenshot : MonoBehaviour
         isPhoto = true;
     }
 
-    private IEnumerator CoroutineScreenshot(string fileName)
+    private IEnumerator CoroutineScreenshot(string fileName, Camera cam)
     {
         yield return new WaitForEndOfFrame();
 
@@ -60,24 +61,37 @@ public class Screenshot : MonoBehaviour
         {
             int width = Screen.width;
             int height = Screen.height;
-            Texture2D screenshotTexture = new Texture2D(width, height, TextureFormat.ARGB32, false);
+            /*Texture2D screenshotTexture = new Texture2D(width, height, TextureFormat.ARGB32, false);
             Rect rect = new Rect(0, 0, width, height);
             screenshotTexture.ReadPixels(rect, 0, 0);
             screenshotTexture.Apply();
             //Encode to a PNG
-            byte[] bytes = screenshotTexture.EncodeToPNG();
+            byte[] bytes = screenshotTexture.EncodeToPNG();*/
+
+            RenderTexture screenTexture = new RenderTexture(width, height, 16);
+            cam.targetTexture = screenTexture;
+            RenderTexture.active = screenTexture;
+            cam.Render();
+            Texture2D renderedTexture = new Texture2D(width, height);
+            renderedTexture.ReadPixels(new Rect(0, 0, width, height), 0, 0);
+            RenderTexture.active = null;
+            cam.targetTexture = null;
+            byte[] bytes = renderedTexture.EncodeToPNG();
+            string base64String = Convert.ToBase64String(bytes);
+
             //path.combine takes into OS consideration and adds on a correct path "/" or "\"
             //<app storage path>/<cam folder name>
             string path = Path.Combine(Application.persistentDataPath, CamFolderAlias);
-            Debug.Log(path);
+            t.text += "" + path + "\n";
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
             //Write out the PNG.persistentDataPath is the path of the application
-            File.WriteAllBytes(Path.Combine(path, fileName), bytes);
+            System.IO.File.WriteAllBytes(Path.Combine(path, fileName), bytes);
+            t.text += "" + Path.Combine(path, fileName).ToString() + "\n";
             StartCoroutine(UploadImage(2, fileName));
-            t.text += "" + "Save??/n";
+            
         }
         catch (IOException e)
         {
@@ -104,10 +118,13 @@ public class Screenshot : MonoBehaviour
         string path = Path.Combine(Application.persistentDataPath, CamFolderAlias);
         string localFile = Path.Combine(path, fileName);
 
+
         // Create a reference to the file you want to upload
         //folder must be created first
         StorageReference imgRef = storageRef.Child(Path.Combine(StorageFolderAlias, fileName)); // "images/" + fileName);
-        t.text += "" + "Storage/n";
+        t.text += "" + "Storage\n";
+        Debug.Log(path);
+        Debug.Log(localFile);
 
         //https://firebase.google.com/docs/storage/unity/upload-files
         // Create file metadata including the content type
