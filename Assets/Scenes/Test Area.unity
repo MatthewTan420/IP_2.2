@@ -6975,6 +6975,7 @@ MonoBehaviour:
   authUI: {fileID: 1580559760}
   DropDown: {fileID: 388997125}
   DropDown1: {fileID: 1443554555}
+  Trash: {fileID: 0}
   t: {fileID: 483227389}
 --- !u!4 &1247541212
 Transform:
@@ -7407,7 +7408,7 @@ PrefabInstance:
     - target: {fileID: 7114770129336771053, guid: df64bf5efda75be4db0c812f9277d678,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7114770130731238579, guid: df64bf5efda75be4db0c812f9277d678,
         type: 3}
@@ -9138,7 +9139,7 @@ PrefabInstance:
     - target: {fileID: 7114770129336771053, guid: df64bf5efda75be4db0c812f9277d678,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7114770130731238579, guid: df64bf5efda75be4db0c812f9277d678,
         type: 3}
