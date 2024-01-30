@@ -15,10 +15,11 @@ using TMPro;
 public class Screenshot : MonoBehaviour
 {
     public string CamFolderAlias = "IP_Snapshot";
-    public string StorageFolderAlias = "image";
+    private string StorageFolderAlias;
 
     private bool isPhoto = false;
     public Camera cam;
+    public AuthManager authManager;
 
     private FirebaseStorage storage;
 
@@ -26,6 +27,7 @@ public class Screenshot : MonoBehaviour
     void Start()
     {
         storage = FirebaseStorage.DefaultInstance;
+        StorageFolderAlias = authManager.uID;
     }
 
     // Update is called once per frame
