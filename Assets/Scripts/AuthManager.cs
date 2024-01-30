@@ -33,6 +33,7 @@ public class AuthManager : MonoBehaviour
     DatabaseReference reference;
 
     public static string UID;
+    public string uID;
     public GameObject dataUI;
     public GameObject authUI;
     public DropDown DropDown;
@@ -48,6 +49,12 @@ public class AuthManager : MonoBehaviour
         auth = FirebaseAuth.DefaultInstance;
         mDatabaseRef = FirebaseDatabase.DefaultInstance.RootReference;
         reference = FirebaseDatabase.DefaultInstance.GetReference("players");
+        uID = UID;
+    }
+
+    private void Start()
+    {
+        uID = UID;
     }
 
     public void SignUp()

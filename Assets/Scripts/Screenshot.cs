@@ -15,21 +15,25 @@ using TMPro;
 public class Screenshot : MonoBehaviour
 {
     public string CamFolderAlias = "IP_Snapshot";
-    public string StorageFolderAlias = "image";
+    private string StorageFolderAlias;
 
     private bool isPhoto = false;
     public Camera cam;
+    public AuthManager authManager;
+
+    private FirebaseStorage storage;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        storage = FirebaseStorage.DefaultInstance;
+        StorageFolderAlias = authManager.uID;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T) /*isPhoto == true*/)
+        if (/*Input.GetKeyDown(KeyCode.T)*/ isPhoto == true)
         {
             DateTimeOffset now = (DateTimeOffset)DateTime.UtcNow;
             string fileName = now.ToUnixTimeSeconds() + "-cam.png";
@@ -90,8 +94,10 @@ public class Screenshot : MonoBehaviour
             //Write out the PNG.persistentDataPath is the path of the application
             System.IO.File.WriteAllBytes(Path.Combine(path, fileName), bytes);
             t.text += "" + Path.Combine(path, fileName).ToString() + "\n";
-            StartCoroutine(UploadImage(2, fileName));
-            
+            //StartCoroutine(UploadImage(2, fileName));
+            StartCoroutine(UploadString(2, base64String, fileName));
+
+
         }
         catch (IOException e)
         {
@@ -146,6 +152,52 @@ public class Screenshot : MonoBehaviour
                 t.text += "" + "pjoto/n";
             }
         });
+        isPhoto = false;
+    }
+    
+    IEnumerator UploadString(float delay, string base64String, string pathInStorage)
+    {
+        yield return new WaitForSeconds(delay);
+        /*
+        // Convert Base64 string to byte[]
+        byte[] bytes = Convert.FromBase64String(base64String);
+        // Create a reference to the storage location
+        StorageReference storageRef = storage.GetReference(pathInStorage);
+        // Upload the file to Firebase Storage
+        storageRef.PutBytesAsync(bytes).ContinueWith((Task<StorageMetadata> task) =>
+        {
+            if (task.IsFaulted || task.IsCanceled)
+            {
+                Debug.LogError(task.Exception.ToString());
+                // Handle the error...
+            }
+            else
+            {
+                // File uploaded successfully
+                Debug.Log("File uploaded successfully.");
+            }
+        });*/
+
+        // Convert Base64 string to byte[]
+        byte[] bytes = Convert.FromBase64String(base64String);
+        // Create a reference to the storage location
+        StorageReference storageRef = storage.GetReferenceFromUrl("gs://sungai-buloh.appspot.com/images");
+        StorageReference imgRef = storageRef.Child(Path.Combine(StorageFolderAlias, pathInStorage)); // "images/" + fileName);
+        // Upload the file to Firebase Storage
+        imgRef.PutBytesAsync(bytes).ContinueWith((Task<StorageMetadata> task) =>
+        {
+            if (task.IsFaulted || task.IsCanceled)
+            {
+                Debug.LogError(task.Exception.ToString());
+                // Handle the error...
+            }
+            else
+            {
+                // File uploaded successfully
+                Debug.Log("File uploaded successfully.");
+            }
+        });
+
         isPhoto = false;
     }
 
