@@ -11,6 +11,7 @@ TagManager:
   - Dustbin
   - Education
   - Fish
+  - Bucket
   layers:
   - Default
   - TransparentFX
