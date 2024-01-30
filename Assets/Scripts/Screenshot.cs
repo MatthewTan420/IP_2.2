@@ -10,6 +10,8 @@ using Firebase;
 using Firebase.Storage;
 using Firebase.Extensions;
 using TMPro;
+using UnityEngine.Events;
+using UnityEngine.SocialPlatforms;
 //using UnityEditor.VersionControl;
 
 public class Screenshot : MonoBehaviour
@@ -27,51 +29,55 @@ public class Screenshot : MonoBehaviour
     void Start()
     {
         storage = FirebaseStorage.DefaultInstance;
-        StorageFolderAlias = authManager.uID;
+        StorageFolderAlias = "testing"/*authManager.uID*/;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (/*Input.GetKeyDown(KeyCode.T)*/ isPhoto == true)
+        /*if (Input.GetKeyDown(KeyCode.T) isPhoto == true)
         {
             DateTimeOffset now = (DateTimeOffset)DateTime.UtcNow;
             string fileName = now.ToUnixTimeSeconds() + "-cam.png";
             //ScreenCapture.CaptureScreenshot("GameScreenshot.png");
             StartCoroutine(CoroutineScreenshot(fileName, cam));
+        }*/
+        Debug.DrawLine(transform.position, transform.position + (transform.forward * 10));
+        RaycastHit hit;
+        //if user mouse is at the button
+        if (Physics.Raycast(transform.position, transform.forward, out hit))
+        {
+            //what happens after clicking
+            t.text += "" + hit.transform.tag;
+            if (hit.transform.tag == "Crocodile")
+            {
+                isPhoto = true;
+            }
+            else
+            {
+                isPhoto = false;
+            }
         }
     }
 
     public void photoTake()
     {
-        isPhoto = true;
+        if (isPhoto == true)
+        {
+            DateTimeOffset now = (DateTimeOffset)DateTime.UtcNow;
+            string fileName = now.ToUnixTimeSeconds() + "-cam.png";
+            StartCoroutine(CoroutineScreenshot(fileName, cam));
+        }
     }
 
     private IEnumerator CoroutineScreenshot(string fileName, Camera cam)
     {
         yield return new WaitForEndOfFrame();
 
-        /*int width = Screen.width;
-        int height = Screen.height;
-        Texture2D screenshotTexture = new Texture2D(width, height, TextureFormat.ARGB32, false);
-        Rect rect = new Rect(0, 0, width, height);
-        screenshotTexture.ReadPixels(rect, 0, 0);
-        screenshotTexture.Apply();
-
-        byte[] byteArray = screenshotTexture.EncodeToPNG();
-        System.IO.File.WriteAllBytes(Application.dataPath + "/CameraScreenshot.png", byteArray);
-        */
         try
         {
             int width = Screen.width;
             int height = Screen.height;
-            /*Texture2D screenshotTexture = new Texture2D(width, height, TextureFormat.ARGB32, false);
-            Rect rect = new Rect(0, 0, width, height);
-            screenshotTexture.ReadPixels(rect, 0, 0);
-            screenshotTexture.Apply();
-            //Encode to a PNG
-            byte[] bytes = screenshotTexture.EncodeToPNG();*/
-
             RenderTexture screenTexture = new RenderTexture(width, height, 16);
             cam.targetTexture = screenTexture;
             RenderTexture.active = screenTexture;
@@ -108,76 +114,10 @@ public class Screenshot : MonoBehaviour
             Debug.Log(e.ToString());
         }
     }
-
-    IEnumerator UploadImage(float delay, string fileName)
-    {
-        yield return new WaitForSeconds(delay);
-        // Get a reference to the storage service, using the default Firebase App
-        FirebaseStorage storage = FirebaseStorage.DefaultInstance;
-        // Create a storage reference from our storage service
-        StorageReference storageRef =
-            storage.GetReferenceFromUrl("gs://sungai-buloh.appspot.com/images");
-
-        //File located on disk
-        //take note we are using persistent data path here.
-        //folders must be created before
-        string path = Path.Combine(Application.persistentDataPath, CamFolderAlias);
-        string localFile = Path.Combine(path, fileName);
-
-
-        // Create a reference to the file you want to upload
-        //folder must be created first
-        StorageReference imgRef = storageRef.Child(Path.Combine(StorageFolderAlias, fileName)); // "images/" + fileName);
-        t.text += "" + "Storage\n";
-        Debug.Log(path);
-        Debug.Log(localFile);
-
-        //https://firebase.google.com/docs/storage/unity/upload-files
-        // Create file metadata including the content type
-        var newMetadata = new MetadataChange();
-        newMetadata.ContentType = "image/png";
-
-        // Upload the file to the path "images/rivers.jpg"
-        imgRef.PutFileAsync(localFile, newMetadata)
-        .ContinueWithOnMainThread((Task<StorageMetadata> task) => {
-            if (task.IsFaulted || task.IsCanceled)
-            {
-                t.text += "" + (task.Exception.ToString());
-            }
-            else
-            {
-                // Metadata contains file metadata such as size, content-type, and download URL.
-                StorageMetadata metadata = task.Result;
-                string md5Hash = metadata.Md5Hash;
-                t.text += "" + "pjoto/n";
-            }
-        });
-        isPhoto = false;
-    }
     
     IEnumerator UploadString(float delay, string base64String, string pathInStorage)
     {
         yield return new WaitForSeconds(delay);
-        /*
-        // Convert Base64 string to byte[]
-        byte[] bytes = Convert.FromBase64String(base64String);
-        // Create a reference to the storage location
-        StorageReference storageRef = storage.GetReference(pathInStorage);
-        // Upload the file to Firebase Storage
-        storageRef.PutBytesAsync(bytes).ContinueWith((Task<StorageMetadata> task) =>
-        {
-            if (task.IsFaulted || task.IsCanceled)
-            {
-                Debug.LogError(task.Exception.ToString());
-                // Handle the error...
-            }
-            else
-            {
-                // File uploaded successfully
-                Debug.Log("File uploaded successfully.");
-            }
-        });*/
-
         // Convert Base64 string to byte[]
         byte[] bytes = Convert.FromBase64String(base64String);
         // Create a reference to the storage location
@@ -197,8 +137,6 @@ public class Screenshot : MonoBehaviour
                 Debug.Log("File uploaded successfully.");
             }
         });
-
-        isPhoto = false;
     }
 
     public TextMeshProUGUI t;
