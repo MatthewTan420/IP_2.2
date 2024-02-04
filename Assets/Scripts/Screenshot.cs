@@ -22,40 +22,46 @@ public class Screenshot : MonoBehaviour
     private bool isPhoto = false;
     public Camera cam;
     public AuthManager authManager;
+    public RenderTexture camTex;
+    public TextMeshPro text;
 
     private FirebaseStorage storage;
+
+    public bool isCroc = false;
+    public bool isTree = false;
 
     // Start is called before the first frame update
     void Start()
     {
         storage = FirebaseStorage.DefaultInstance;
-        StorageFolderAlias = "testing"/*authManager.uID*/;
+        StorageFolderAlias = authManager.uID;
     }
 
     // Update is called once per frame
     void Update()
     {
-        /*if (Input.GetKeyDown(KeyCode.T) isPhoto == true)
-        {
-            DateTimeOffset now = (DateTimeOffset)DateTime.UtcNow;
-            string fileName = now.ToUnixTimeSeconds() + "-cam.png";
-            //ScreenCapture.CaptureScreenshot("GameScreenshot.png");
-            StartCoroutine(CoroutineScreenshot(fileName, cam));
-        }*/
         Debug.DrawLine(transform.position, transform.position + (transform.forward * 10));
         RaycastHit hit;
         //if user mouse is at the button
         if (Physics.Raycast(transform.position, transform.forward, out hit))
         {
             //what happens after clicking
-            t.text += "" + hit.transform.tag;
             if (hit.transform.tag == "Crocodile")
             {
                 isPhoto = true;
+                isCroc = true;
+                text.text = "" + hit.transform.tag;
+            }
+            else if (hit.transform.tag == "Tree")
+            {
+                isPhoto = true;
+                isTree = true;
+                text.text = "" + hit.transform.tag;
             }
             else
             {
                 isPhoto = false;
+                text.text = "";
             }
         }
     }
@@ -85,22 +91,10 @@ public class Screenshot : MonoBehaviour
             Texture2D renderedTexture = new Texture2D(width, height);
             renderedTexture.ReadPixels(new Rect(0, 0, width, height), 0, 0);
             RenderTexture.active = null;
-            cam.targetTexture = null;
+            cam.targetTexture = camTex;
             byte[] bytes = renderedTexture.EncodeToPNG();
             string base64String = Convert.ToBase64String(bytes);
 
-            //path.combine takes into OS consideration and adds on a correct path "/" or "\"
-            //<app storage path>/<cam folder name>
-            string path = Path.Combine(Application.persistentDataPath, CamFolderAlias);
-            t.text += "" + path + "\n";
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            //Write out the PNG.persistentDataPath is the path of the application
-            System.IO.File.WriteAllBytes(Path.Combine(path, fileName), bytes);
-            t.text += "" + Path.Combine(path, fileName).ToString() + "\n";
-            //StartCoroutine(UploadImage(2, fileName));
             StartCoroutine(UploadString(2, base64String, fileName));
 
 
@@ -137,6 +131,7 @@ public class Screenshot : MonoBehaviour
                 Debug.Log("File uploaded successfully.");
             }
         });
+        authManager.UpdateImg();
     }
 
     public TextMeshProUGUI t;

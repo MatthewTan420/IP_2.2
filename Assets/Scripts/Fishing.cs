@@ -4,23 +4,21 @@ using UnityEngine;
 
 public class Fishing : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    private GameObject fish;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Fish")
         {
             other.transform.SetParent(gameObject.transform);
+            float randomNumber = Random.Range(5, 15);
+            fish = other.gameObject;
+            Invoke("fishEscape", randomNumber);
         }
+    }
+
+    public void fishEscape()
+    {
+        Destroy(fish);
     }
 }

@@ -8,10 +8,11 @@ public class User
     public int age;
     public bool companion;
     public int img;
+    public int prawn;
     public User()
     {
     }
-    public User(string username, int distance, int rubbish, string gender, string occupation, int age, bool companion, int img)
+    public User(string username, int distance, int rubbish, string gender, string occupation, int age, bool companion, int img, int prawn)
     {
         this.username = username;
         this.distance = distance;
@@ -21,5 +22,6 @@ public class User
         this.age = age;
         this.companion = companion;
         this.img = img;
+        this.prawn = prawn;
     }
 }
