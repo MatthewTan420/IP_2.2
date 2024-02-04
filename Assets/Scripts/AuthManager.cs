@@ -42,7 +42,11 @@ public class AuthManager : MonoBehaviour
     public Trash Trash;
     public Distance Distance;
 
+    public static int dis;
+    public static int image;
+
     public int distance;
+    public int img;
 
     private void Awake()
     {
@@ -55,6 +59,8 @@ public class AuthManager : MonoBehaviour
     private void Start()
     {
         uID = UID;
+        distance = dis;
+        img = image;
     }
 
     public void SignUp()
@@ -115,15 +121,15 @@ public class AuthManager : MonoBehaviour
         string newGend = DropDown1.selectedOption;
         string newOccu = DropDown.selectedOption;
         int newAge = int.Parse(inputAge.text);
-        WriteNewUser(newUser, 0, 0, newGend, newOccu, newAge, false, 0);
+        WriteNewUser(newUser, 0, 0, newGend, newOccu, newAge, false, 0, 0);
     }
 
     /// <summary>
     /// Create data on firebase
     /// </summary>
-    private void WriteNewUser(string username, int distance, int rubbish, string gender, string occupation, int age, bool companion, int img)
+    private void WriteNewUser(string username, int distance, int rubbish, string gender, string occupation, int age, bool companion, int img, int prawn)
     {
-        User user = new User(username, distance, rubbish, gender, occupation, age, companion, img);
+        User user = new User(username, distance, rubbish, gender, occupation, age, companion, img, prawn);
         string json = JsonUtility.ToJson(user);
         mDatabaseRef.Child("players").Child(UID).SetRawJsonValueAsync(json);
         SceneManager.LoadScene(1);
@@ -143,6 +149,24 @@ public class AuthManager : MonoBehaviour
         distance += 5;
         Dictionary<string, object> childUpdates = new Dictionary<string, object>();
         childUpdates["/distance"] = distance;
+
+        reference.Child(UID).UpdateChildrenAsync(childUpdates);
+    }
+
+    public void UpdatePrawn()
+    {
+        int rubbish = Trash.pnum;
+        Dictionary<string, object> childUpdates = new Dictionary<string, object>();
+        childUpdates["/prawn"] = rubbish;
+
+        reference.Child(UID).UpdateChildrenAsync(childUpdates);
+    }
+
+    public void UpdateImg()
+    {
+        img += 1;
+        Dictionary<string, object> childUpdates = new Dictionary<string, object>();
+        childUpdates["/img"] = img;
 
         reference.Child(UID).UpdateChildrenAsync(childUpdates);
     }
@@ -173,7 +197,8 @@ public class AuthManager : MonoBehaviour
                     {
                         t.text += "" + (p.age).ToString();
                         //t.text += "" + p.country;
-                        distance = p.distance;
+                        dis = p.distance;
+                        image = p.img;
                     }
                 }
             }

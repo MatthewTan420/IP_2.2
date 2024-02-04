@@ -7,9 +7,15 @@ public class Trash : MonoBehaviour
 {
     public TextMeshPro textMeshPro;
     public int num = 0;
+    public int pnum = 0;
     public int subnum = 0;
 
     public GameObject text;
+    public GameObject plant;
+    public GameObject soil;
+    public GameObject seed;
+
+    private bool isDig = false;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -27,8 +33,8 @@ public class Trash : MonoBehaviour
 
         if (other.gameObject.tag == "Fish" && gameObject.tag == "Bucket")
         {
-            num += 1;
-            textMeshPro.text = num.ToString();
+            pnum += 1;
+            textMeshPro.text = pnum.ToString();
             Destroy(other.gameObject);
         }
         else if (other.gameObject.tag == "Trash" && gameObject.tag == "Bucket")
@@ -36,11 +42,29 @@ public class Trash : MonoBehaviour
             subnum += 1;
             if (subnum == 5)
             {
-                num += 1;
-                textMeshPro.text = num.ToString();
+                pnum += 1;
+                textMeshPro.text = pnum.ToString();
                 subnum = 0;
             }
             Destroy(other.gameObject);
+        }
+
+        if (other.gameObject.tag == "Shovel" && gameObject.tag == "Spot")
+        {
+            soil.SetActive(true);
+            seed.SetActive(true);
+            isDig = true;
+        }
+
+        if (other.gameObject.tag == "Seed" && gameObject.tag == "Spot")
+        {
+            if (isDig == true)
+            {
+                plant.SetActive(true);
+                Destroy(other.gameObject);
+                Destroy(gameObject);
+            }
+
         }
     }
 }
