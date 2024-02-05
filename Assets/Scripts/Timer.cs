@@ -9,6 +9,8 @@ public class Timer : MonoBehaviour
     public float timer;
     private float time;
     public bool isEnd = true;
+    public bool isFish;
+    public bool isTrash;
     public AuthManager authManager;
 
     private void Start()
@@ -28,7 +30,14 @@ public class Timer : MonoBehaviour
             else
             {
                 timerLb1.text = "0:0";
-                authManager.UpdatePrawn();
+                if (isFish == true)
+                {
+                    authManager.UpdatePrawn();
+                }
+                else if (isTrash == true)
+                {
+                    authManager.UpdateTrash();
+                }
             }
         }
         else
