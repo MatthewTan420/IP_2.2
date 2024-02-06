@@ -17,6 +17,14 @@ public class Trash : MonoBehaviour
 
     private bool isDig = false;
 
+    public void reset()
+    {
+        num = 0;
+        pnum = 0;
+        subnum = 0;
+        textMeshPro.text = "0";
+}
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Trash" && gameObject.tag == "Dustbin")
