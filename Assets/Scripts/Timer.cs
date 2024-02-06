@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class Timer : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class Timer : MonoBehaviour
     public bool isFish;
     public bool isTrash;
     public AuthManager authManager;
+    public GameObject obj;
 
     private void Start()
     {
@@ -20,6 +22,11 @@ public class Timer : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            isStarted();
+        }
+
         if (isEnd == false)
         {
             if (timer > 0)
@@ -32,17 +39,21 @@ public class Timer : MonoBehaviour
                 timerLb1.text = "0:0";
                 if (isFish == true)
                 {
-                    authManager.UpdatePrawn();
+                    Debug.Log("fish");
+                    //authManager.UpdatePrawn();
                 }
                 else if (isTrash == true)
                 {
-                    authManager.UpdateTrash();
+                    Debug.Log("trash");
+                    //authManager.UpdateTrash();
                 }
+                isEnd = true;
             }
         }
         else
         {
             DisplayTime(timer);
+            obj.SetActive(true);
         }
     }
 
