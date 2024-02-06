@@ -170,6 +170,14 @@ public class AuthManager : MonoBehaviour
 
         reference.Child(UID).UpdateChildrenAsync(childUpdates);
     }
+    public void UpdateComp()
+    {
+        Dictionary<string, object> childUpdates = new Dictionary<string, object>();
+        childUpdates["/companion"] = true;
+
+        reference.Child(UID).UpdateChildrenAsync(childUpdates);
+    }
+
 
     public void Login()
     {

@@ -8,12 +8,12 @@ public class TrashSpawn : MonoBehaviour
     public float firerate;
     public float nextfire;
 
-    public int x1;
-    public int x2;
-    public int y1;
-    public int y2;
-    public int z1;
-    public int z2;
+    public float x1;
+    public float x2;
+    public float y1;
+    public float y2;
+    public float z1;
+    public float z2;
 
     void Start()
     {
@@ -34,9 +34,9 @@ public class TrashSpawn : MonoBehaviour
 
     public void SpawnTrash()
     {
-        int spawnPointX = Random.Range(x1, x2);
-        int spawnPointY = Random.Range(y1, y2);
-        int spawnPointZ = Random.Range(z1, z2);
+        float spawnPointX = Random.Range(x1, x2);
+        float spawnPointY = Random.Range(y1, y2);
+        float spawnPointZ = Random.Range(z1, z2);
 
         Vector3 spawnPosition = new Vector3(spawnPointX, spawnPointY, spawnPointZ);
 
