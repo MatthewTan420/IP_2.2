@@ -10,23 +10,42 @@ public class Companion : MonoBehaviour
     public Animator aiAnim;
     public GameObject bird;
     Vector3 dest;
+    public bool isFed = false;
+
+    public AuthManager authManager;
 
     void Update()
     {
-        dest = player.position;
-        ai.destination = dest;
-        if (ai.remainingDistance <= ai.stoppingDistance)
+        if (isFed)
         {
-            aiAnim.SetBool("isFar", false);
-            aiAnim.SetBool("isClose", true);
-            //Debug.Log(bird.transform.position.y);
-            bird.transform.position = new Vector3(bird.transform.position.x, -1, bird.transform.position.z);
+            dest = player.position;
+            ai.destination = dest;
+            if (ai.remainingDistance <= ai.stoppingDistance)
+            {
+                aiAnim.SetBool("isFar", false);
+                aiAnim.SetBool("isClose", true);
+                bird.transform.position = new Vector3(bird.transform.position.x, 7, bird.transform.position.z);
+            }
+            else
+            {
+                aiAnim.SetBool("isClose", false);
+                aiAnim.SetBool("isFar", true);
+                bird.transform.position = new Vector3(bird.transform.position.x, 8, bird.transform.position.z);
+            }
         }
         else
         {
-            aiAnim.SetBool("isClose", false);
-            aiAnim.SetBool("isFar", true);
-            bird.transform.position = new Vector3(bird.transform.position.x, 0, bird.transform.position.z);
+            aiAnim.SetBool("isClose", true);
+            bird.transform.position = new Vector3(bird.transform.position.x, 7, bird.transform.position.z);
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Seed")
+        {
+            isFed = true;
+            Destroy(other.gameObject);
+            authManager.UpdateComp();
         }
     }
 }

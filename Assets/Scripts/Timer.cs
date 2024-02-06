@@ -14,6 +14,7 @@ public class Timer : MonoBehaviour
     public bool isTrash;
     public AuthManager authManager;
     public GameObject obj;
+    public GameObject barrier;
 
     private void Start()
     {
@@ -40,13 +41,14 @@ public class Timer : MonoBehaviour
                 if (isFish == true)
                 {
                     Debug.Log("fish");
-                    //authManager.UpdatePrawn();
+                    authManager.UpdatePrawn();
                 }
                 else if (isTrash == true)
                 {
                     Debug.Log("trash");
-                    //authManager.UpdateTrash();
+                    authManager.UpdateTrash();
                 }
+                barrier.SetActive(false);
                 isEnd = true;
             }
         }
