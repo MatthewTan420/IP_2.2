@@ -590,6 +590,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6585287238880026297}
+  - component: {fileID: 8303334724579772709}
   m_Layer: 0
   m_Name: Big Bridge Railing
   m_TagString: Untagged
@@ -640,6 +641,27 @@ Transform:
   - {fileID: 9033332324350554031}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &8303334724579772709
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2788003829631099774}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1500, y: 700, z: 100}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3344382484815632163
 GameObject:
   m_ObjectHideFlags: 0
