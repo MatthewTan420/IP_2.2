@@ -17,6 +17,8 @@ TagManager:
   - Spot
   - Seed
   - Shovel
+  - interior
+  - exterior
   layers:
   - Default
   - TransparentFX
