@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8206698057785876388}
   - component: {fileID: 5647334731927957912}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: SnapInteractor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ GameObject:
   - component: {fileID: 2669238685238075103}
   - component: {fileID: 7199282186658265808}
   - component: {fileID: 2321020192097384238}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Trash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -196,7 +196,7 @@ GameObject:
   - component: {fileID: 3957356107646521498}
   - component: {fileID: 711441663283493690}
   - component: {fileID: 1060840759236048577}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Cube (2)
   m_TagString: Trash
   m_Icon: {fileID: 0}

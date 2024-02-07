@@ -1,3 +1,9 @@
+/*
+ * Author: Matthew, Seth, Wee Kiat, Isabel, Clifford
+ * Date: 8/2/2024
+ * Description: AudioPlay
+ */
+
 using UnityEngine;
 using System.Collections;
 //added libraries
@@ -16,36 +22,76 @@ using UnityEngine.SocialPlatforms;
 
 public class Screenshot : MonoBehaviour
 {
+    /// <summary>
+    /// Folder alias for storing images in Firebase Storage.
+    /// </summary>
     public string CamFolderAlias = "IP_Snapshot";
+
+    /// <summary>
+    /// Folder alias for storage in Firebase Storage.
+    /// </summary>
     private string StorageFolderAlias;
 
+    /// <summary>
+    /// Flag indicating if a photo is ready to be taken.
+    /// </summary>
     private bool isPhoto = false;
+
+    /// <summary>
+    /// Reference to the Camera component.
+    /// </summary>
     public Camera cam;
+
+    /// <summary>
+    /// Reference to the AuthManager script.
+    /// </summary>
     public AuthManager authManager;
+
+    /// <summary>
+    /// RenderTexture for the camera.
+    /// </summary>
     public RenderTexture camTex;
+
+    /// <summary>
+    /// TextMeshPro UI element for displaying information.
+    /// </summary>
     public TextMeshPro text;
 
+    /// <summary>
+    /// Firebase Storage instance.
+    /// </summary>
     private FirebaseStorage storage;
 
+    /// <summary>
+    /// Flag indicating if the photo is of a crocodile.
+    /// </summary>
     public bool isCroc = false;
+
+    /// <summary>
+    /// Flag indicating if the photo is of a tree.
+    /// </summary>
     public bool isTree = false;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Called before the first frame update. Initializes Firebase Storage and folder aliases.
+    /// </summary>
     void Start()
     {
         storage = FirebaseStorage.DefaultInstance;
-        StorageFolderAlias = authManager.uID;
+        StorageFolderAlias = "test"; // Set the storage folder alias
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Called once per frame. Performs raycasting to identify targets and updates UI information.
+    /// </summary>
     void Update()
     {
         Debug.DrawLine(transform.position, transform.position + (transform.forward * 10));
         RaycastHit hit;
-        //if user mouse is at the button
+
+        // Raycast to identify targets
         if (Physics.Raycast(transform.position, transform.forward, out hit))
         {
-            //what happens after clicking
             if (hit.transform.tag == "Crocodile")
             {
                 isPhoto = true;
@@ -58,6 +104,11 @@ public class Screenshot : MonoBehaviour
                 isTree = true;
                 text.text = "" + hit.transform.tag;
             }
+            else if (hit.transform.tag == "Bird" || hit.transform.tag == "Monkey")
+            {
+                isPhoto = true;
+                text.text = "" + hit.transform.tag;
+            }
             else
             {
                 isPhoto = false;
@@ -66,6 +117,9 @@ public class Screenshot : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Initiates the photo capture process.
+    /// </summary>
     public void photoTake()
     {
         if (isPhoto == true)
@@ -76,6 +130,9 @@ public class Screenshot : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Coroutine for capturing screenshots and initiating the upload process.
+    /// </summary>
     private IEnumerator CoroutineScreenshot(string fileName, Camera cam)
     {
         yield return new WaitForEndOfFrame();
@@ -96,8 +153,6 @@ public class Screenshot : MonoBehaviour
             string base64String = Convert.ToBase64String(bytes);
 
             StartCoroutine(UploadString(2, base64String, fileName));
-
-
         }
         catch (IOException e)
         {
@@ -108,7 +163,10 @@ public class Screenshot : MonoBehaviour
             Debug.Log(e.ToString());
         }
     }
-    
+
+    /// <summary>
+    /// Coroutine for uploading Base64 string to Firebase Storage.
+    /// </summary>
     IEnumerator UploadString(float delay, string base64String, string pathInStorage)
     {
         yield return new WaitForSeconds(delay);
@@ -116,7 +174,7 @@ public class Screenshot : MonoBehaviour
         byte[] bytes = Convert.FromBase64String(base64String);
         // Create a reference to the storage location
         StorageReference storageRef = storage.GetReferenceFromUrl("gs://sungai-buloh.appspot.com/images");
-        StorageReference imgRef = storageRef.Child(Path.Combine(StorageFolderAlias, pathInStorage)); // "images/" + fileName);
+        StorageReference imgRef = storageRef.Child(Path.Combine(StorageFolderAlias, pathInStorage));
         // Upload the file to Firebase Storage
         imgRef.PutBytesAsync(bytes).ContinueWith((Task<StorageMetadata> task) =>
         {
