@@ -1,3 +1,9 @@
+/*
+ * Author: Matthew, Seth, Wee Kiat, Isabel, Clifford
+ * Date: 8/2/2024
+ * Description: Firebase
+ */
+
 using Firebase.Auth;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,40 +20,114 @@ using static OVRPlugin;
 
 public class AuthManager : MonoBehaviour
 {
-    Firebase.Auth.FirebaseAuth auth;
+    /// <summary>
+    /// The Firebase authentication instance.
+    /// </summary>
+    private FirebaseAuth auth;
 
-    [SerializeField]
-    private TMP_InputField inputEmail;
-    [SerializeField]
-    private TMP_InputField inputPassword;
-    [SerializeField]
-    private TMP_InputField logEmail;
-    [SerializeField]
-    private TMP_InputField logPassword;
-    [SerializeField]
-    private TMP_InputField inputUser;
-    [SerializeField]
-    private TMP_InputField inputAge;
+    /// <summary>
+    /// Input field for user email during sign-up.
+    /// </summary>
+    [SerializeField] private TMP_InputField inputEmail;
 
-    DatabaseReference mDatabaseRef;
-    DatabaseReference reference;
+    /// <summary>
+    /// Input field for user password during sign-up.
+    /// </summary>
+    [SerializeField] private TMP_InputField inputPassword;
 
+    /// <summary>
+    /// Input field for user email during sign-in.
+    /// </summary>
+    [SerializeField] private TMP_InputField logEmail;
+
+    /// <summary>
+    /// Input field for user password during sign-in.
+    /// </summary>
+    [SerializeField] private TMP_InputField logPassword;
+
+    /// <summary>
+    /// Input field for user username during data creation.
+    /// </summary>
+    [SerializeField] private TMP_InputField inputUser;
+
+    /// <summary>
+    /// Input field for user age during data creation.
+    /// </summary>
+    [SerializeField] private TMP_InputField inputAge;
+
+    /// <summary>
+    /// The Firebase Realtime Database reference.
+    /// </summary>
+    private DatabaseReference mDatabaseRef;
+
+    /// <summary>
+    /// Reference to the "players" node in the database.
+    /// </summary>
+    private DatabaseReference reference;
+
+    /// <summary>
+    /// The unique user ID obtained after authentication.
+    /// </summary>
     public static string UID;
+
+    /// <summary>
+    /// Variable to store the user ID.
+    /// </summary>
     public string uID;
+
+    /// <summary>
+    /// UI GameObject for data display.
+    /// </summary>
     public GameObject dataUI;
+
+    /// <summary>
+    /// UI GameObject for authentication.
+    /// </summary>
     public GameObject authUI;
+
+    /// <summary>
+    /// Dropdown UI component for gender selection.
+    /// </summary>
     public DropDown DropDown;
+
+    /// <summary>
+    /// Dropdown UI component for occupation selection.
+    /// </summary>
     public DropDown DropDown1;
 
+    /// <summary>
+    /// Reference to the Trash script.
+    /// </summary>
     public Trash Trash;
+
+    /// <summary>
+    /// Reference to the Distance script.
+    /// </summary>
     public Distance Distance;
 
+    /// <summary>
+    /// Static variable to store distance.
+    /// </summary>
     public static int dis;
+
+    /// <summary>
+    /// Static variable to store image count.
+    /// </summary>
     public static int image;
 
+    /// <summary>
+    /// Variable to store distance.
+    /// </summary>
     public int distance;
+
+    /// <summary>
+    /// Variable to store image count.
+    /// </summary>
     public int img;
 
+    /// <summary>
+    /// Called on script initialization. Initializes Firebase services and references.
+    /// </summary>
     private void Awake()
     {
         auth = FirebaseAuth.DefaultInstance;
@@ -56,6 +136,9 @@ public class AuthManager : MonoBehaviour
         uID = UID;
     }
 
+    /// <summary>
+    /// Called on script start. Assigns initial values to user-specific variables.
+    /// </summary>
     private void Start()
     {
         uID = UID;
@@ -63,6 +146,9 @@ public class AuthManager : MonoBehaviour
         img = image;
     }
 
+    /// <summary>
+    /// Initiates the user sign-up process using Firebase Authentication.
+    /// </summary>
     public void SignUp()
     {
         string newEmail = inputEmail.text;
@@ -70,11 +156,10 @@ public class AuthManager : MonoBehaviour
 
         auth.CreateUserWithEmailAndPasswordAsync(newEmail, newPassword).ContinueWithOnMainThread(task =>
         {
-            //perform task handling
             if (task.IsFaulted || task.IsCanceled)
             {
                 Debug.LogError("Sorry, there was an error creating your new account, ERROR: " + task.Exception);
-                return;//exit from the attempt
+                return;
             }
             else if (task.IsCompleted)
             {
@@ -82,11 +167,13 @@ public class AuthManager : MonoBehaviour
                 UID = newPlayer.User.UserId;
                 dataUI.SetActive(true);
                 authUI.SetActive(false);
-                //do anything you want after player creation eg. create new player
             }
         });
     }
 
+    /// <summary>
+    /// Initiates the user sign-in process using Firebase Authentication.
+    /// </summary>
     public void SignInUser()
     {
         string email = logEmail.text;
@@ -106,7 +193,6 @@ public class AuthManager : MonoBehaviour
             FirebaseUser currentPlayer = authTask.Result.User;
             if (currentPlayer != null)
             {
-                Debug.Log("login success");
                 UID = currentPlayer.UserId;
                 authUI.SetActive(false);
                 SceneManager.LoadScene(1);
@@ -115,6 +201,9 @@ public class AuthManager : MonoBehaviour
         });
     }
 
+    /// <summary>
+    /// Creates user data on Firebase Realtime Database.
+    /// </summary>
     public void CreateData()
     {
         string newUser = inputUser.text;
@@ -125,7 +214,7 @@ public class AuthManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Create data on firebase
+    /// Writes new user data to the database.
     /// </summary>
     private void WriteNewUser(string username, int distance, int rubbish, string gender, string occupation, int age, bool companion, int img, int prawn)
     {
@@ -135,6 +224,9 @@ public class AuthManager : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
+    /// <summary>
+    /// Updates the trash count on the database.
+    /// </summary>
     public void UpdateTrash()
     {
         int rubbish = Trash.num;
@@ -144,6 +236,9 @@ public class AuthManager : MonoBehaviour
         reference.Child(UID).UpdateChildrenAsync(childUpdates);
     }
 
+    /// <summary>
+    /// Updates the distance value on the database.
+    /// </summary>
     public void UpdateDistance()
     {
         distance += 5;
@@ -153,6 +248,9 @@ public class AuthManager : MonoBehaviour
         reference.Child(UID).UpdateChildrenAsync(childUpdates);
     }
 
+    /// <summary>
+    /// Updates the prawn count on the database.
+    /// </summary>
     public void UpdatePrawn()
     {
         int rubbish = Trash.pnum;
@@ -162,6 +260,9 @@ public class AuthManager : MonoBehaviour
         reference.Child(UID).UpdateChildrenAsync(childUpdates);
     }
 
+    /// <summary>
+    /// Updates the image count on the database.
+    /// </summary>
     public void UpdateImg()
     {
         img += 1;
@@ -170,6 +271,10 @@ public class AuthManager : MonoBehaviour
 
         reference.Child(UID).UpdateChildrenAsync(childUpdates);
     }
+
+    /// <summary>
+    /// Updates the companion status on the database.
+    /// </summary>
     public void UpdateComp()
     {
         Dictionary<string, object> childUpdates = new Dictionary<string, object>();
@@ -178,7 +283,9 @@ public class AuthManager : MonoBehaviour
         reference.Child(UID).UpdateChildrenAsync(childUpdates);
     }
 
-
+    /// <summary>
+    /// Retrieves user data from the database and updates local variables.
+    /// </summary>
     public void Login()
     {
         mDatabaseRef.Child("players").GetValueAsync().ContinueWithOnMainThread(task =>
@@ -194,8 +301,6 @@ public class AuthManager : MonoBehaviour
 
                 foreach (var v in ds.Children)
                 {
-                    string data = v.ToString();
-
                     string playerKey = v.Key;
                     string playerDetails = v.GetRawJsonValue();
 
@@ -203,8 +308,6 @@ public class AuthManager : MonoBehaviour
 
                     if (v.Key == UID)
                     {
-                        t.text += "" + (p.age).ToString();
-                        //t.text += "" + p.country;
                         dis = p.distance;
                         image = p.img;
                     }
