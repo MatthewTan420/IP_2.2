@@ -3,22 +3,7 @@ guid: a1bb5e4009bf34c46a1deddd57bb0c8a
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: HighPolyTrimsheet
-    second: {fileID: 2100000, guid: c0927910778a32049a97da2f94e0839c, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: MudKip1001
-    second: {fileID: 2100000, guid: 89709413a1e220e459a3f7c6aa4d198e, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: MudKip1002
-    second: {fileID: 2100000, guid: 427dc0275fc399b4a8e9c3259e02b4fc, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -63,7 +48,7 @@ ModelImporter:
     nodeNameCollisionStrategy: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
-    generateSecondaryUV: 1
+    generateSecondaryUV: 0
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1
