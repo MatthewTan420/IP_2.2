@@ -115,6 +115,10 @@ public class AuthManager : MonoBehaviour
     /// </summary>
     public static int image;
 
+    public static int prawn;
+
+    public static int bag;
+
     /// <summary>
     /// Variable to store distance.
     /// </summary>
@@ -230,6 +234,7 @@ public class AuthManager : MonoBehaviour
     public void UpdateTrash()
     {
         int rubbish = Trash.num;
+        rubbish += bag;
         Dictionary<string, object> childUpdates = new Dictionary<string, object>();
         childUpdates["/rubbish"] = rubbish;
 
@@ -254,6 +259,7 @@ public class AuthManager : MonoBehaviour
     public void UpdatePrawn()
     {
         int rubbish = Trash.pnum;
+        rubbish += prawn;
         Dictionary<string, object> childUpdates = new Dictionary<string, object>();
         childUpdates["/prawn"] = rubbish;
 
@@ -310,6 +316,8 @@ public class AuthManager : MonoBehaviour
                     {
                         dis = p.distance;
                         image = p.img;
+                        bag = p.rubbish;
+                        prawn = p.prawn;
                     }
                 }
             }
