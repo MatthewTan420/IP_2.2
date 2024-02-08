@@ -78,7 +78,7 @@ public class Screenshot : MonoBehaviour
     void Start()
     {
         storage = FirebaseStorage.DefaultInstance;
-        StorageFolderAlias = "test"; // Set the storage folder alias
+        StorageFolderAlias = authManager.uID; // Set the storage folder alias
     }
 
     /// <summary>
@@ -104,7 +104,12 @@ public class Screenshot : MonoBehaviour
                 isTree = true;
                 text.text = "" + hit.transform.tag;
             }
-            else if (hit.transform.tag == "Bird" || hit.transform.tag == "Monkey")
+            else if (hit.transform.tag == "Bird")
+            {
+                isPhoto = true;
+                text.text = "" + hit.transform.tag;
+            }
+            else if (hit.transform.tag == "Monkey")
             {
                 isPhoto = true;
                 text.text = "" + hit.transform.tag;

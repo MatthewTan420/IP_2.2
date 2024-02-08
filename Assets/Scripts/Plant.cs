@@ -51,6 +51,9 @@ public class Plant : MonoBehaviour
     /// </summary>
     public bool isSun;
 
+    public ParticleSystem area;
+    public ParticleSystem lvlup;
+
     /// <summary>
     /// Called when another Collider enters this GameObject's trigger collider.
     /// Manages plant growth based on interactions with water, sunlight, and fertile soil.
@@ -60,6 +63,7 @@ public class Plant : MonoBehaviour
         if (other.gameObject.tag == "Water" && gameObject.tag == "Plant")
         {
             animator.SetBool("isWater", true);
+            treeGrown();
             watered = true;
         }
 
@@ -68,6 +72,7 @@ public class Plant : MonoBehaviour
             if (watered == true && isSun == true)
             {
                 animator.SetBool("isFertil", true);
+                treeGrown();
                 Invoke(nameof(objActive), 10.0f);
             }
             else if (watered == true && isSun == false)
@@ -83,5 +88,11 @@ public class Plant : MonoBehaviour
     private void objActive()
     {
         obj.SetActive(true);
+    }
+
+    private void treeGrown()
+    {
+        area.Play();
+        lvlup.Play();
     }
 }
